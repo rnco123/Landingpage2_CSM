@@ -39,7 +39,7 @@ const SecondMainPage = () => {
               location={t('clinicaSanMiguel')}
               heroTextConitnued={`, ${t('secondWord')}`}
             />
-            <WhyUs name={t('clinicaSanMiguel')} location={t('riverOaksBlvd')} />
+            <WhyUs name={t('clinicaSanMiguel')} location={t('secondWord')} />
             <BookAppointment bgUrl="/unsplash2.png" />
             <Reviews />
             <Blogs />
