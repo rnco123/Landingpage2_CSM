@@ -2,46 +2,68 @@ import React from "react";
 import { User } from "lucide-react";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
-
+import { useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
 type BookAppointmentProps = {
   bgUrl: string;
 };
 
 const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
+  const [phonenumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [bookAppointment, setBookAppointment] = useState("");
+  const [healthTreatment, setHealthTreatment] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+
+  const handleSubmit = async () => {
+    console.log("in submit");
+    try {
+      // setItems([...items, newItem]);
+      await addDoc(collection(db, "appointment"), {
+        _phonenumber: phonenumber,
+        _email: email,
+        _bookAppointment: bookAppointment,
+        _healthTreatment: healthTreatment,
+        _date: date,
+        _time: time,
+      });
+      console.log("submitted");
+    } catch (err) {
+      console.log("error in submit", err);
+    }
+  };
   const services = [
-    { icon: "/Walking Skin Type 1.png", text: 'walkInsWelcome' },
-    { icon: "/Office.png", text: 'clinicVisit' },
-    { icon: "/Protect.png", text: 'noInsuranceNeeded' },
-    { icon: "/Language Skill.png", text: 'bilingual' }
+    { icon: "/Walking Skin Type 1.png", text: "walkInsWelcome" },
+    { icon: "/Office.png", text: "clinicVisit" },
+    { icon: "/Protect.png", text: "noInsuranceNeeded" },
+    { icon: "/Language Skill.png", text: "bilingual" },
   ];
   return (
     <div className="w-full min-h-screen flex-items-center">
       <div className="w-full flex justify-center bg-[#D01717] py-20 h-[60vh]">
         <div className="w-[90%] max-w-[1350px] flex flex-col relative py-10">
-        <div className="w-full flex justify-between">
-  {services.map((service, index) => (
-    <div key={index} className="flex flex-col items-center gap-3">
-      <img
-        src={service.icon}
-        className="h-16 lg:h-20"
-        alt=""
-      />
-      <span className="font-light text-white text-center text-[15px] md:text-base">
-        {t(service.text)}
-      </span>
-    </div>
-  ))}
-</div>
+          <div className="w-full flex justify-between">
+            {services.map((service, index) => (
+              <div key={index} className="flex flex-col items-center gap-3">
+                <img src={service.icon} className="h-16 lg:h-20" alt="" />
+                <span className="font-light text-white text-center text-[15px] md:text-base">
+                  {t(service.text)}
+                </span>
+              </div>
+            ))}
+          </div>
 
           <div className="w-full flex bg-white rounded-xl min-h-[40vh] absolute top-[70%] shadow-md">
             <div className="flex-[3] px-8 lg:px-16 py-12 flex flex-col justify-between gap-12">
               <h4 className="text-[#A71A1E] text-lg lg:text-xl font-extrabold">
-                {t('quickAssessment')}
+                {t("quickAssessment")}
               </h4>
               <h2 className="text-4xl lg:text-5xl font-semibold text-[#333333]">
-              {t('bookAppointment')}
+                {t("bookAppointment")}
               </h2>
               <div className="w-full">
                 <div className="flex w-full justify-between">
@@ -50,13 +72,16 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                       <User size={30} />
                       <div className="flex flex-col w-full">
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
-                        {t('phone')}
-
+                          {t("phone")}
                         </span>
                         <input
                           type="text"
-                          className="border-b-2 w-[90%] lg:w-[75%] outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
-                          placeholder={t('enterPhone')}
+                          className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
+                          placeholder={t("enterPhone")}
+                          value={phonenumber}
+                          onChange={(e: any) => {
+                            setPhoneNumber(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -64,13 +89,16 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                       <User size={30} />
                       <div className="flex flex-col w-full">
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
-                        {t('bookAppointment')}
-
+                          {t("bookAppointment")}
                         </span>
                         <input
                           type="text"
-                          className="border-b-2 w-[90%] lg:w-[75%] outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
+                          className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
                           placeholder="Enter phone no. here"
+                          value={bookAppointment}
+                          onChange={(e: any) => {
+                            setBookAppointment(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -78,13 +106,16 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                       <User size={30} />
                       <div className="flex flex-col w-full">
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
-                        {t('date')}
-
+                          {t("date")}
                         </span>
                         <input
                           type="text"
-                          className="border-b-2 w-[90%] lg:w-[75%] outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
-                          placeholder={t('selectDate')}
+                          className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
+                          placeholder={t("selectDate")}
+                          value={date}
+                          onChange={(e: any) => {
+                            setDate(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -94,13 +125,16 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                       <User size={30} />
                       <div className="flex flex-col w-full">
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
-                        {t('email')}
-
+                          {t("email")}
                         </span>
                         <input
                           type="text"
-                          className="border-b-2 w-[90%] lg:w-[75%] outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
-                          placeholder={t('enterEmail')}
+                          className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
+                          placeholder={t("enterEmail")}
+                          value={email}
+                          onChange={(e: any) => {
+                            setEmail(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -108,12 +142,16 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                       <User size={30} />
                       <div className="flex flex-col w-full">
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
-                        {t('healthTreatment')}
+                          {t("healthTreatment")}
                         </span>
                         <input
                           type="text"
-                          className="border-b-2 w-[90%] lg:w-[75%] outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
-                          placeholder={t('selectTreatment')}
+                          className="border-b-2 w-[90%] lg:w-[75%] outline-none text-black  p-1 border-[#D01717] font-medium text-sm lg:text-base"
+                          placeholder={t("selectTreatment")}
+                          onChange={(e: any) => {
+                            setHealthTreatment(e.target.value);
+                          }}
+                          value={healthTreatment}
                         />
                       </div>
                     </div>
@@ -121,13 +159,16 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                       <User size={30} />
                       <div className="flex flex-col w-full">
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
-                        {t('time')}
-
+                          {t("time")}
                         </span>
                         <input
                           type="text"
-                          className="border-b-2 w-[90%] lg:w-[75%] outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
-                          placeholder={t('selectTime')}
+                          className="border-b-2 w-[90%] lg:w-[75%] text-black outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
+                          placeholder={t("selectTime")}
+                          onChange={(e: any) => {
+                            setTime(e.target.value);
+                          }}
+                          value={time}
                         />
                       </div>
                     </div>
@@ -135,9 +176,11 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                 </div>
               </div>
               <div className="w-full flex justify-center pr-10">
-                <button className="py-4 px-16 text-white font-medium text-sm bg-[#D01717] rounded-lg">
-                {t('submit')}
-
+                <button
+                  className="py-4 px-16 text-white font-medium text-sm bg-[#D01717] rounded-lg"
+                  onClick={handleSubmit}
+                >
+                  {t("submit")}
                 </button>
               </div>
             </div>
@@ -158,7 +201,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                   className="z-10"
                 />
                 <span className="text-white text-center text-3xl font-semibold z-10 w-1/2">
-                {t('clinicaSanMiguel')}
+                  {t("clinicaSanMiguel")}
                 </span>
               </div>
             </div>
