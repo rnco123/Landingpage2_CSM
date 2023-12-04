@@ -13,7 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import timeData from "../../public/time.json";
 import treatmentData from "../../public/treatment.json";
 type BookAppointmentProps = {
@@ -26,7 +26,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
   const [email, setEmail] = useState("");
   const [bookAppointment, setBookAppointment] = useState("");
   const [healthTreatment, setHealthTreatment] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(null);
   const [time, setTime] = useState("");
   const [age, setAge] = React.useState("");
 
@@ -41,13 +41,14 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
     console.log("in submit");
     try {
       // setItems([...items, newItem]);
+      const datestring = JSON.stringify(date);
       await addDoc(collection(db, "appointment"), {
-        _phonenumber: phonenumber,
-        _email: email,
-        _bookAppointment: bookAppointment,
-        _healthTreatment: healthTreatment,
-        _date: date,
-        _time: time,
+        phonenumber: phonenumber,
+        email: email,
+        bookAppointment: bookAppointment,
+        healthTreatment: healthTreatment,
+        date: datestring,
+        time: time,
       });
       console.log("submitted");
     } catch (err) {
@@ -145,9 +146,11 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                             setDate(e.target.value);
                           }}
                         /> */}
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker defaultValue={dayjs("2022-04-17")} />
-                        </LocalizationProvider>
+
+                        <DatePicker
+                          value={date}
+                          onChange={(newValue) => setDate(newValue)}
+                        />
                       </div>
                     </div>
                   </div>
