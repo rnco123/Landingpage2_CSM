@@ -5,7 +5,15 @@ import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
-
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import dayjs from "dayjs";
 type BookAppointmentProps = {
   bgUrl: string;
 };
@@ -18,6 +26,11 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
   const [healthTreatment, setHealthTreatment] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [age, setAge] = React.useState("");
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setHealthTreatment(event.target.value);
+  };
 
   const handleSubmit = async () => {
     console.log("in submit");
@@ -108,7 +121,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
                           {t("date")}
                         </span>
-                        <input
+                        {/* <input
                           type="text"
                           className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
                           placeholder={t("selectDate")}
@@ -116,7 +129,10 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                           onChange={(e: any) => {
                             setDate(e.target.value);
                           }}
-                        />
+                        /> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker defaultValue={dayjs("2022-04-17")} />
+                        </LocalizationProvider>
                       </div>
                     </div>
                   </div>
@@ -144,7 +160,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
                           {t("healthTreatment")}
                         </span>
-                        <input
+                        {/* <input
                           type="text"
                           className="border-b-2 w-[90%] lg:w-[75%] outline-none text-black  p-1 border-[#D01717] font-medium text-sm lg:text-base"
                           placeholder={t("selectTreatment")}
@@ -152,7 +168,26 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                             setHealthTreatment(e.target.value);
                           }}
                           value={healthTreatment}
-                        />
+                        /> */}
+                        <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                          {/* <InputLabel id="demo-simple-select-standard-label">
+                            selectTreatment
+                          </InputLabel> */}
+                          <Select
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={healthTreatment}
+                            onChange={handleChange}
+                            label="selectTreatment"
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                        </FormControl>
                       </div>
                     </div>
                     <div className="flex gap-2 items-start w-full">
@@ -161,7 +196,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
                           {t("time")}
                         </span>
-                        <input
+                        {/* <input
                           type="text"
                           className="border-b-2 w-[90%] lg:w-[75%] text-black outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
                           placeholder={t("selectTime")}
@@ -169,7 +204,26 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                             setTime(e.target.value);
                           }}
                           value={time}
-                        />
+                        /> */}
+                        <FormControl variant="standard" sx={{ minWidth: 80 }}>
+                          {/* <InputLabel id="demo-simple-select-standard-label">
+                            selectTreatment
+                          </InputLabel> */}
+                          <Select
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={healthTreatment}
+                            onChange={handleChange}
+                            label="selectTreatment"
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                        </FormControl>
                       </div>
                     </div>
                   </div>
