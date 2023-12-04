@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import dayjs from "dayjs";
+import timeData from "../../public/time.json";
+import treatmentData from "../../public/treatment.json";
 type BookAppointmentProps = {
   bgUrl: string;
 };
@@ -94,9 +96,14 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                           type="text"
                           className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
                           placeholder={t("enterPhone")}
+                          inputMode="numeric"
                           value={phonenumber}
                           onChange={(e: any) => {
-                            setPhoneNumber(e.target.value);
+                            const inputValue = e.target.value.replace(
+                              /[^0-9]/g,
+                              ""
+                            );
+                            setPhoneNumber(inputValue);
                           }}
                         />
                       </div>
@@ -112,8 +119,13 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                           className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
                           placeholder="Enter phone no. here"
                           value={bookAppointment}
+                          inputMode="numeric"
                           onChange={(e: any) => {
-                            setBookAppointment(e.target.value);
+                            const inputValue = e.target.value.replace(
+                              /[^0-9]/g,
+                              ""
+                            );
+                            setBookAppointment(inputValue);
                           }}
                         />
                       </div>
@@ -147,7 +159,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                           {t("email")}
                         </span>
                         <input
-                          type="text"
+                          type="email"
                           className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
                           placeholder={t("enterEmail")}
                           value={email}
@@ -186,14 +198,11 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                             <MenuItem value="">
                               <em>None</em>
                             </MenuItem>
-                            <MenuItem value={10}>DOT Physical</MenuItem>
-                            <MenuItem value={20}>Family Medicine</MenuItem>
-                            <MenuItem value={30}>Immigration Exams</MenuItem>
-                            <MenuItem value={40}>School Physicals</MenuItem>
-                            <MenuItem value={50}>EKG</MenuItem>
-                            <MenuItem value={60}>Blood Work</MenuItem>
-                            <MenuItem value={70}>STD Testing</MenuItem>{" "}
-                            <MenuItem value={80}>Diabetes</MenuItem>
+                            {treatmentData.map((treatment, index) => (
+                              <MenuItem value={treatment.name}>
+                                {treatment.name}
+                              </MenuItem>
+                            ))}
                           </Select>
                         </FormControl>
                       </div>
@@ -227,16 +236,11 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                             <MenuItem value="">
                               <em>None</em>
                             </MenuItem>
-                            <MenuItem value={10}>10am</MenuItem>
-                            <MenuItem value={11}>11am</MenuItem>
-                            <MenuItem value={12}>12am</MenuItem>
-                            <MenuItem value={13}>1pm</MenuItem>
-                            <MenuItem value={14}>2pm</MenuItem>
-                            <MenuItem value={15}>3pm</MenuItem>
-                            <MenuItem value={16}>4pm</MenuItem>
-                            <MenuItem value={17}>5pm</MenuItem>
-                            <MenuItem value={18}>6pm</MenuItem>
-                            <MenuItem value={19}>7pm</MenuItem>
+                            {timeData.map((time, index) => (
+                              <MenuItem value={time?.time}>
+                                {time?.time}
+                              </MenuItem>
+                            ))}
                           </Select>
                         </FormControl>
                       </div>
