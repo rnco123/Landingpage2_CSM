@@ -31,6 +31,9 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
   const handleChange = (event: SelectChangeEvent) => {
     setHealthTreatment(event.target.value);
   };
+  const handleChangeTime = (event: SelectChangeEvent) => {
+    setTime(event.target.value);
+  };
 
   const handleSubmit = async () => {
     console.log("in submit");
@@ -183,9 +186,14 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                             <MenuItem value="">
                               <em>None</em>
                             </MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            <MenuItem value={10}>DOT Physical</MenuItem>
+                            <MenuItem value={20}>Family Medicine</MenuItem>
+                            <MenuItem value={30}>Immigration Exams</MenuItem>
+                            <MenuItem value={40}>School Physicals</MenuItem>
+                            <MenuItem value={50}>EKG</MenuItem>
+                            <MenuItem value={60}>Blood Work</MenuItem>
+                            <MenuItem value={70}>STD Testing</MenuItem>{" "}
+                            <MenuItem value={80}>Diabetes</MenuItem>
                           </Select>
                         </FormControl>
                       </div>
@@ -212,16 +220,23 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                           <Select
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
-                            value={healthTreatment}
-                            onChange={handleChange}
-                            label="selectTreatment"
+                            value={time}
+                            onChange={handleChangeTime}
+                            label="selectTime"
                           >
                             <MenuItem value="">
                               <em>None</em>
                             </MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            <MenuItem value={10}>10am</MenuItem>
+                            <MenuItem value={11}>11am</MenuItem>
+                            <MenuItem value={12}>12am</MenuItem>
+                            <MenuItem value={13}>1pm</MenuItem>
+                            <MenuItem value={14}>2pm</MenuItem>
+                            <MenuItem value={15}>3pm</MenuItem>
+                            <MenuItem value={16}>4pm</MenuItem>
+                            <MenuItem value={17}>5pm</MenuItem>
+                            <MenuItem value={18}>6pm</MenuItem>
+                            <MenuItem value={19}>7pm</MenuItem>
                           </Select>
                         </FormControl>
                       </div>
