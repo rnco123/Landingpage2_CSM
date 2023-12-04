@@ -6,14 +6,9 @@ import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import dayjs, { Dayjs } from "dayjs";
 import timeData from "../../public/time.json";
 import treatmentData from "../../public/treatment.json";
 type BookAppointmentProps = {
@@ -24,6 +19,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
   const { t } = useTranslation();
   const [phonenumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [bookAppointment, setBookAppointment] = useState("");
   const [healthTreatment, setHealthTreatment] = useState("");
   const [date, setDate] = useState(null);
@@ -37,13 +33,16 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
     setTime(event.target.value);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     console.log("in submit");
+    if (!name || !healthTreatment || !bookAppointment || !time || !email) {
+      return;
+    }
     try {
-      // setItems([...items, newItem]);
       const datestring = JSON.stringify(date);
       await addDoc(collection(db, "appointment"), {
-        phonenumber: phonenumber,
+        name: name,
         email: email,
         bookAppointment: bookAppointment,
         healthTreatment: healthTreatment,
@@ -91,20 +90,15 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                       <User size={30} />
                       <div className="flex flex-col w-full">
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
-                          {t("phone")}
+                          {t("name")}
                         </span>
                         <input
                           type="text"
                           className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
-                          placeholder={t("enterPhone")}
-                          inputMode="numeric"
-                          value={phonenumber}
+                          placeholder={t("John Wilson")}
+                          value={name}
                           onChange={(e: any) => {
-                            const inputValue = e.target.value.replace(
-                              /[^0-9]/g,
-                              ""
-                            );
-                            setPhoneNumber(inputValue);
+                            setName(e.target.value);
                           }}
                         />
                       </div>
@@ -118,7 +112,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                         <input
                           type="text"
                           className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
-                          placeholder="Enter phone no. here"
+                          placeholder="+1 432 432 4321"
                           value={bookAppointment}
                           inputMode="numeric"
                           onChange={(e: any) => {
@@ -164,7 +158,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                         <input
                           type="email"
                           className="border-b-2 w-[90%] lg:w-[75%] text-black  outline-none p-1 border-[#D01717] font-medium text-sm lg:text-base"
-                          placeholder={t("enterEmail")}
+                          placeholder={t("johnwilson@example.com")}
                           value={email}
                           onChange={(e: any) => {
                             setEmail(e.target.value);
