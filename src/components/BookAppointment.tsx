@@ -107,7 +107,7 @@ const BookAppointment = ({ bgUrl }: BookAppointmentProps) => {
                       <User size={30} />
                       <div className="flex flex-col w-full">
                         <span className="text-lg lg:text-xl font-bold text-[#333333]">
-                          {t("bookAppointment")}
+                          {t("Phone Number")}
                         </span>
                         <input
                           type="text"
